@@ -9,8 +9,6 @@ def post_new_user(body):
 
 user_response = post_new_user(data.user_body)
 
-print(user_response.status_code)
-print(user_response.json())
 
 def post_new_client_kit(body):
     return requests.post(configuration.URL_SERVICE + configuration.CREATE_KIT_NAME,
@@ -18,6 +16,3 @@ def post_new_client_kit(body):
                          headers=data.headers_kit)
 
 kit_response = post_new_client_kit(data.kit_body)
-
-print(kit_response.status_code)
-print(kit_response.json())

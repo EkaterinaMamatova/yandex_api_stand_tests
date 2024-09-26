@@ -22,9 +22,16 @@ def negative_assert_code_400(name):
 
 
 def get_new_user_token(user_response):
-    return user_response.json().get("authToken")
+    return "Bearer " + user_response.json().get("authToken")
 
-data.headers_kit["Authorization"] = "Bearer " + get_new_user_token(sender_stand_request.user_response)
+data.headers_kit["Authorization"] = get_new_user_token(sender_stand_request.user_response)
+
+#добавила после ревью - негативная проверка для Тест 10. Параметр не передан в запросе
+
+def negative_assert_parameter_not_passed_in_name(name):
+    response = sender_stand_request.post_new_client_kit(name)
+
+    assert response.status_code == 400
 
 
 #Тест 1. Допустимое количество символов (1)
@@ -60,7 +67,7 @@ def test_create_kit_russian_letter_in_name_get_success_response():
 #Тест 7. Разрешены спецсимволы
 
 def test_create_kit_special_characters_in_name_get_success_response():
-    positive_assert("'№%@',")
+    positive_assert('"№%@",')
 
 #Тест 8. Разрешены пробелы
 
@@ -77,7 +84,7 @@ def test_create_kit_numbers_in_name_get_success_response():
 def test_create_kit_parameter_not_passed_in_name_get_error_response():
     kit_body = data.kit_body.copy()
     kit_body.pop("name")
-    negative_assert_code_400(kit_body)
+    negative_assert_parameter_not_passed_in_name(kit_body)
 
 #Тест 11. Передан другой тип параметра (число)
 
